@@ -364,7 +364,7 @@ def main(cd_timer, DSP):
         frame_view_object = sg.Column([
             [sg.Frame("Simulation object", [[
                 sg.Image(filename=schematic_small_file, key="-SIMIMG-", enable_events=True,
-                         tooltip="Click to wiew in full size")
+                         tooltip="Click to view in full size")
             ]])],
             [sg.Frame("Simulation parameters", [
                 [sg.Text("Simulation time", size=(14, 1)),
@@ -461,8 +461,8 @@ def main(cd_timer, DSP):
             ], [sg.Text("Selected : heater1", size=(15, 1))], [frame3]])]  # CHAGNE AFTER STABLE RELASE
         ], vertical_alignment='Top')
         frame2 = sg.Column([
-            [sg.Frame("Wiew", [[
-                sg.Image(filename=controllers_model[0], key="-CONTWIEW-")
+            [sg.Frame("View", [[
+                sg.Image(filename=controllers_model[0], key="-CONTVIEW-")
             ]])]
         ])
         layout = [
@@ -614,7 +614,7 @@ def main(cd_timer, DSP):
                          enable_close_attempted_event=True,
                          auto_size_text=False, auto_size_buttons=False)
 
-    def wiew_schematic():
+    def view_schematic():
         return sg.Window("Schematic", [[sg.Image(filename=schematic_file)]], finalize=True)
 
     controller = controller_tab()
@@ -641,7 +641,7 @@ def main(cd_timer, DSP):
             return False  # input is not valid
         if min is not None and max is not None:  # Do if min and max values are given
             if float_type:  # Do if float type flag is raised
-                if min <= float(input) and max >= float(input):  # Check input to be in range of min and max
+                if min <= float(input) <= max:  # Check input to be in range of min and max
                     if test_minmax:  # Test if input (max) value is not lower than minmax
                         if minmax == '':
                             return False
@@ -653,7 +653,7 @@ def main(cd_timer, DSP):
                         return True  # input in range min, max
                 else:
                     return False  # input beyond range min, max
-            elif min <= int(input) and max >= int(input):  # Check input to be in range of min and max
+            elif min <= int(input) <= max:  # Check input to be in range of min and max
                 if test_minmax:  # Test if input (max) value is not lower than minmax
                     if minmax == '':
                         return False
@@ -669,26 +669,26 @@ def main(cd_timer, DSP):
             if time_type:  # Do if time type flag is raised
                 time = re.search("([0-9]{1,2}):([0-9]{2}):([0-9]{2})",
                                  input)  # Divide time (input) to hours, minutes and seconds
-                if 1 <= int(time.group(1)) and 99 >= int(time.group(1)):  # Check if hours are in range of 1 to 99
-                    if 0 <= int(time.group(2)) and 59 >= int(time.group(2)):  # Check if minutes are in range of 1 to 59
+                if 1 <= int(time.group(1)) <= 99:  # Check if hours are in range of 1 to 99
+                    if 0 <= int(time.group(2)) <= 59:  # Check if minutes are in range of 1 to 59
                         if 0 <= int(time.group(3)) and 59 >= int(
                                 time.group(3)):  # Check if seconds are in range of 1 to 59
                             return True
                         else:
                             return False
                     else:
-                        if 0 <= int(time.group(3)) and 59 >= int(time.group(3)):
+                        if 0 <= int(time.group(3)) <= 59:
                             return True
                         else:
                             return False
                 else:
-                    if 1 <= int(time.group(2)) and 59 >= int(time.group(2)):
-                        if 0 <= int(time.group(3)) and 59 >= int(time.group(3)):
+                    if 1 <= int(time.group(2)) <= 59:
+                        if 0 <= int(time.group(3)) <= 59:
                             return True
                         else:
                             return False
                     else:
-                        if 1 <= int(time.group(3)) and 59 >= int(time.group(3)):
+                        if 1 <= int(time.group(3)) <= 59:
                             return True
                         else:
                             return False
@@ -956,7 +956,7 @@ def main(cd_timer, DSP):
 
             if event == '-SIMIMG-' and schematic_opened == False:
                 schematic_opened = True
-                schematic = wiew_schematic()
+                schematic = view_schematic()
 
             inputs['-PLAY-'].update(disabled=False if values['-RTSIM-'] is True else True)
             inputs['-PAUSE-'].update(disabled=False if values['-RTSIM-'] is True else True)
@@ -1013,7 +1013,7 @@ def main(cd_timer, DSP):
                 c = 0
                 for pic in controllers_model:
                     if re.search(str("./Graph/" + actual_object + "_" + actual_controller + "_s.png"), pic):
-                        controller['-CONTWIEW-'].update(filename=controllers_model[c])
+                        controller['-CONTVIEW-'].update(filename=controllers_model[c])
                     c += 1
 
             if event == '-SELOBJ-' and len(values['-SELOBJ-']):
@@ -1022,7 +1022,7 @@ def main(cd_timer, DSP):
                 c = 0
                 for pic in controllers_model:
                     if re.search(str("./Graph/" + actual_object + "_" + actual_controller + "_s.png"), pic):
-                        controller['-CONTWIEW-'].update(filename=controllers_model[c])
+                        controller['-CONTVIEW-'].update(filename=controllers_model[c])
                     c += 1
                 # for c in controller_io:
                 #    controller[c].update(text=)
