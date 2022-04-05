@@ -4,7 +4,6 @@ import random
 from multiprocessing import shared_memory, Process
 from multiprocessing.managers import BaseManager
 import time
-import sys
 
 version = "0.0.88 Alfa (not registered)"
 relase_date = "2021/04/08"
@@ -35,8 +34,8 @@ formats_tuple = ('^[0-9]{1,3}\.[0-9]$', '^[0-9]{3,4}$', '^[0-9]{2}$', '^[0-9]{1,
                  '^[0-9]{1,2}:[0-9]{2}:[0-9]{2}$', '^[0-9]{1,2}$')
 realtime_parameters_tuple = ('-1RT-', '-2RT-', '-3RT-', '-4RT-', '-5RT-', '-6RT-', '-7RT-')
 realtime_parameters_values = {}
-for r in realtime_parameters_tuple:
-    realtime_parameters_values = 0
+# for r in realtime_parameters_tuple:
+#    realtime_parameters_values = 0
 schematic_file = "./Graph/schematic768790.png"
 schematic_small_file = "./Graph/schematic240247.png"
 noise_disabled = True
@@ -50,7 +49,7 @@ actual_object = outputs_tuple[0]
 update_values = False
 
 
-class Countdown_timer:
+class CountdownTimer:
     def __init__(self):
         self.enabled = False
         self.hours = 0
@@ -354,10 +353,10 @@ def main(cd_timer, DSP):
                  sg.Slider(tooltip="%", range=(-50, 50), orientation='h', size=(14, 10),
                            key=realtime_parameters_tuple[4], default_value=0)],
                 [sg.Checkbox("Pump", key=realtime_parameters_tuple[5], enable_events=True,
-                             tooltip="Turn on/off main pump", auto_size_text=(1, 1),
+                             tooltip="Turn on/off main pump", auto_size_text=True,
                              checkbox_color=sg.DEFAULT_BACKGROUND_COLOR),
                  sg.Checkbox("Valve", key=realtime_parameters_tuple[6], enable_events=True,
-                             tooltip="Turn on/off main valve", auto_size_text=(1, 1),
+                             tooltip="Turn on/off main valve", auto_size_text=True,
                              checkbox_color=sg.DEFAULT_BACKGROUND_COLOR)]
             ], key='-RTADJ-', visible=False, pad=((0, 0), (0, 0)))]
         ])
@@ -1173,7 +1172,7 @@ def down_counter(cd_timer):
 
 
 if __name__ == '__main__':
-    BaseManager.register('Countdown_timer', Countdown_timer)
+    BaseManager.register('Countdown_timer', CountdownTimer)
     manager = BaseManager()
     manager.start()
     ct = manager.Countdown_timer()
